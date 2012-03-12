@@ -46,5 +46,11 @@ test-byte:
 
 
 dist: clean
-	tar -cf antelatex-$(VERSION).tar ex src *
+	mkdir tmp
+	cp -f AUTHORS CHANGELOG LICENSE  Makefile  NEWS  README TODO VERSION tmp/
+	cp -r src/ tmp/
+	cp -r ex/ tmp/
+	mv tmp antelatex-$(VERSION)
+	tar -cf antelatex-$(VERSION).tar antelatex-$(VERSION)
 	gzip antelatex-$(VERSION).tar
+	rm -rf antelatex-$(VERSION)
