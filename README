@@ -47,27 +47,27 @@ Grammar file syntax:
 ====================
 
 Grammar files are text files that define the substitutions that should be
-applied within some sets of delimitors.
+applied within some sets of delimiters.
 
 A simple first line of a grammar file can be:
 
 {{[[}{]]}{$}{$}}
 
-The braces are separators, and within the braces are the delimitors. In
+The braces are separators, and within the braces are the delimiters. In
 this case, the grammar declares that the substitutions that are to follow
 should be applied within double brackets [[ and ]] and that the result of
 the substitution should appear in the TeX file between $ and $.
 
-The delimitors should always be 2 characters long. In the same line it is
-possible to declare several delimitors for the same set of substitutions,
+The delimiters should always be 2 characters long. In the same line it is
+possible to declare several delimiters for the same set of substitutions,
 as in:
 
 {{[[}{]]}{$}{$}}{{<[}{]>}{}{}} 
 
-This declaration defines the delimitors [[ ]] and <[ ]> such that [[ ]]
+This declaration defines the delimiters [[ ]] and <[ ]> such that [[ ]]
 introduces the math mode while <[ ]> does not.
 
-Following the delimitors declaration, there should be a number of
+Following the delimiters declaration, there should be a number of
 substitutions.  Each substitution definition takes exactly one line, of the
 form:
 
@@ -88,11 +88,11 @@ these substitution definitions:
 { } [ ] ( )
 
 The following characters cannot be in a word to be substituted unless that
-word has no alphanumerical characters:
+word has no alpha-numerical characters:
 
 , . ; *
 
-These symbols are interpreted litterally by antelatex, except for the curly
+These symbols are interpreted literally by antelatex, except for the curly
 braces { and }, which are used for grouping.
 
 No restriction exist on the right-hand side, meaning that the following
@@ -122,14 +122,14 @@ Then antelatex will produce a file containing the line:
   We know that $1 + 1$ is equal to 2.
 
 Notice that the double brackets [[ ]] introduce the dollar signs of the
-math mode. This is the only difference between the two delimitors in this
+math mode. This is the only difference between the two delimiters in this
 case.
 
 It is important to define in the grammar all the syntactic elements that
-appear within the delimitors. Only the numbers, and a few characters ('[ ]
+appear within the delimiters. Only the numbers, and a few characters ('[ ]
 ( ) , . ; *' are automatically defined.
 
-Within the delimitors, the use of double quotes tells antelatex not to
+Within the delimiters, the use of double quotes tells antelatex not to
 interpret a chunk of text. Antelatex surrounds that bit with \mbox.
 
   [[2 "is" 2]]
@@ -138,6 +138,6 @@ is translated in
 
   $2 \mbox{is} 2$
 
-Whithin the delimitors, portions that are within (* and *) are considered
+Within the delimiters, portions that are within (* and *) are considered
 as comments and are not substituted.
 
