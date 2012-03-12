@@ -1,10 +1,12 @@
 #(********************************************************************)
 #(* Antelatex - Makefile                                             *)
 #(********************************************************************)
-#(* $Time-stamp: <Malo - 2012>$ *)
+#(* $Time-stamp: <Pierre-Malo Denielou - 2012>$ *)
 
 
 BINDIR := /usr/local/bin
+
+VERSION := `cat VERSION`
 
 
 all: byte native
@@ -42,3 +44,7 @@ test-native:
 test-byte:
 	./antelatex.byte -g ex/grammar.gra ex/test.ant
 
+
+dist: clean
+	tar -cf antelatex-$(VERSION).tar ex src *
+	gzip antelatex-$(VERSION).tar
