@@ -1,0 +1,143 @@
+Antelatex
+=========
+
+This software is a pre-processor for TeX/LaTeX.
+
+Please read the LICENSE file before using this software.
+
+Prerequisites:
+==============
+
+- ocaml (any version will do)
+
+Compilation:
+============
+
+$ make all
+
+This should build both the native and the byte-code version of the
+executable.
+
+Installation:
+=============
+
+$ make install
+
+This should install the native-code executable file in the appropriate
+place (/usr/local/bin by default.
+
+$ make install-byte
+
+This installs the bytecode version of the executable.
+
+$ make install BINDIR=~/bin
+
+This overrides the default installation directory.
+
+Usage:
+======
+
+$ antelatex -g grammar.gra myfile.ant
+
+This calls antelatex on a file called myfile.ant. It uses the grammar
+definition in grammar.gra to process myfile.ant and produce a file called
+myfile.tex.
+
+Grammar file syntax:
+====================
+
+Grammar files are text files that define the substitutions that should be
+applied within some sets of delimitors.
+
+A simple first line of a grammar file can be:
+
+{{[[}{]]}{$}{$}}
+
+The braces are separators, and within the braces are the delimitors. In
+this case, the grammar declares that the substitutions that are to follow
+should be applied within double brackets [[ and ]] and that the result of
+the substitution should appear in the TeX file between $ and $.
+
+The delimitors should always be 2 characters long. In the same line it is
+possible to declare several delimitors for the same set of substitutions,
+as in:
+
+{{[[}{]]}{$}{$}}{{<[}{]>}{}{}} 
+
+This declaration defines the delimitors [[ ]] and <[ ]> such that [[ ]]
+introduces the math mode while <[ ]> does not.
+
+Following the delimitors declaration, there should be a number of
+substitutions.  Each substitution definition takes exactly one line, of the
+form:
+
+0 {alpha} = \alpha
+
+where 0 is the arity, 'alpha' the sequence of characters (between curly
+braces) to by substituted and '\alpha' (anything after the '=' and before
+the end of line) what it should be substituted to.
+
+2 {-->} = \xlongarrow{#1}_{#2}
+
+When the arity is more than 0, the arguments are substituted in the
+positions materialised by #1, #2, ...
+
+The following special characters cannot appear on the left-hand side of
+these substitution definitions:
+
+{ } [ ] ( )
+
+The following characters cannot be in a word to be substituted unless that
+word has no alphanumerical characters:
+
+, . ; *
+
+These symbols are interpreted litterally by antelatex, except for the curly
+braces { and }, which are used for grouping.
+
+No restriction exist on the right-hand side, meaning that the following
+substitution is allowed:
+
+0 {-->*} = \rightarrow^{\ast}
+
+
+Tex file syntax:
+================
+
+Antelatex applies the substitutions in certain delimited parts of a text
+files. 
+
+Suppose a file contains the following line:
+
+  We know that [[1 plus 1]] is equal to <[two]>.
+
+if the grammar file contains the following definitions:
+
+{{[[}{]]}{$}{$}}{{<[}{]>}{}{}} 
+0 {plus} = +
+0 {two} = 2
+
+Then antelatex will produce a file containing the line:
+
+  We know that $1 + 1$ is equal to 2.
+
+Notice that the double brackets [[ ]] introduce the dollar signs of the
+math mode. This is the only difference between the two delimitors in this
+case.
+
+It is important to define in the grammar all the syntactic elements that
+appear within the delimitors. Only the numbers, and a few characters ('[ ]
+( ) , . ; *' are automatically defined.
+
+Within the delimitors, the use of double quotes tells antelatex not to
+interpret a chunk of text. Antelatex surrounds that bit with \mbox.
+
+  [[2 "is" 2]]
+
+is translated in
+
+  $2 \mbox{is} 2$
+
+Whithin the delimitors, portions that are within (* and *) are considered
+as comments and are not substituted.
+
