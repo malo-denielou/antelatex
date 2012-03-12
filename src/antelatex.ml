@@ -17,22 +17,22 @@ let grammar_file = ref None
 let latex_files : (string list) ref = ref [] 
 
 let msg_usage = 
-  "Usage: antelatex [-v] -g GRAM FILE ...\n"^
-    "Processes the FILE(s) according to the grammar file GRAM."
+  "Usage: antelatex [-v] -g GRAMMAR FILE ...\n"^
+    "Processes the FILE(s) according to the GRAMMAR file."
  
 let speclist = Arg.align
   [ ("-v", 
      Arg.Unit switch_debug_on,
-     ": verbose mode");
-     ("-vv", 
+     " verbose mode");
+    ("-vv", 
      Arg.Unit switch_fulldebug_on,
-     ": verbose mode with additional output");
-     ("--version",
-      Arg.Unit (function () -> print_string version; exit 0),
-      ": outputs the version number and exits");
+     " verbose mode with additional output");
+    ("--version",
+     Arg.Unit (function () -> print_string version; exit 0),
+     " outputs the version number and exits");
     ("-g",
      Arg.String (fun s -> grammar_file := Some s),
-     ": sets the ")
+     "GRAMMAR specifies the grammar file")
   ]
  
 let main () =
