@@ -24,7 +24,7 @@ Installation:
 $ make install
 
 This should install the native-code executable file in the appropriate
-place (/usr/local/bin by default.
+place (/usr/local/bin by default).
 
 $ make install-byte
 
