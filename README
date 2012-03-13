@@ -51,12 +51,13 @@ applied within some sets of delimiters.
 
 A simple first line of a grammar file can be:
 
-{{[[}{]]}{$}{$}}
+Delimiters:{{[[}{]]}{$}{$}}
 
 The braces are separators, and within the braces are the delimiters. In
 this case, the grammar declares that the substitutions that are to follow
 should be applied within double brackets [[ and ]] and that the result of
-the substitution should appear in the TeX file between $ and $.
+the substitution should appear in the TeX file between $ and $. The keyword
+"Delimiters:" is optional.
 
 The delimiters should always be 2 characters long. In the same line it is
 possible to declare several delimiters for the same set of substitutions,
@@ -80,7 +81,10 @@ the end of line) what it should be substituted to.
 2 {-->} = \xlongarrow{#1}_{#2}
 
 When the arity is more than 0, the arguments are substituted in the
-positions materialised by #1, #2, ...
+positions materialised by #1, #2, ... The arity is optional and can be
+automatically detected. It is thus possible to only write:
+
+{alpha} = \alpha
 
 The following special characters cannot appear on the left-hand side of
 these substitution definitions:
@@ -95,10 +99,10 @@ word has no alpha-numerical characters:
 These symbols are interpreted literally by antelatex, except for the curly
 braces { and }, which are used for grouping.
 
-No restriction exist on the right-hand side, meaning that the following
-substitution is allowed:
+No restriction exist on the right-hand side, meaning that, for example, the
+following substitution is allowed:
 
-0 {-->*} = \rightarrow^{\ast}
+1 {-->^} = \rightarrow^{#1}
 
 
 Tex file syntax:
@@ -113,9 +117,9 @@ Suppose a file contains the following line:
 
 if the grammar file contains the following definitions:
 
-{{[[}{]]}{$}{$}}{{<[}{]>}{}{}} 
-0 {plus} = +
-0 {two} = 2
+Delimiters:{{[[}{]]}{$}{$}}{{<[}{]>}{}{}} 
+{plus} = +
+{two} = 2
 
 Then antelatex will produce a file containing the line:
 
