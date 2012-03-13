@@ -33,7 +33,9 @@ let grammar (filename:string) : grammar =
 
   let inp = open_in filename in
   let case l n s r =
-    let _ = fulldebug_gram (Printf.sprintf "Parsing grammar file: arity %d" l) in
+    let _ = fulldebug_gram 
+      (Printf.sprintf 
+         "Parsing grammar file line %d: arity %d" l n) in
     match n with
         0 -> add s (S r)
       | 1 -> add s (F1 (fun x -> (subst '1' x r)))
