@@ -32,10 +32,14 @@ let grammar (filename:string) : grammar =
     Hashtbl.add !reg s e in
 
   let inp = open_in filename in
-  let case l n s r =
+
+  let line = ref 0 in
+
+  let case n s r =
+    let n = if n="" then guess_arity r else int_of_string n in
     let _ = fulldebug_gram 
       (Printf.sprintf 
-         "Parsing grammar file line %d: arity %d" l n) in
+         "Parsing grammar file line %d: arity %d" !line n) in
     match n with
         0 -> add s (S r)
       | 1 -> add s (F1 (fun x -> (subst '1' x r)))
@@ -49,19 +53,20 @@ let grammar (filename:string) : grammar =
 
   let rec parse_def s =
     if s = "" then []
-    else Scanf.sscanf s "{{%s@}{%s@}{%s@}{%s@}}%s" aux
-  and aux dl dr sl sr q =
+    else Scanf.sscanf s "%s@{{%s@}{%s@}{%s@}{%s@}}%s" aux
+  and aux _ dl dr sl sr q =
     if String.length dl <> 2 || String.length dr <> 2 then
       failwith "Delimiters should be two characters long";
     let _ = fulldebug_gram 
       (Printf.sprintf 
-         "Adding transformation: between %S and %S, bound characters %S %S"
-         dl dr sl sr) in
+         "Adding transformation line %d: between %S and %S, bound characters %S %S"
+         !line dl dr sl sr) in
     (dl,(dr,(sl,sr)))::(parse_def q) in
   try
     while true do
       let s = input_line inp in
-      if s.[0] = '{' then begin
+      incr(line);
+      if s.[0] = 'D' || (s.[0] = '{' && s.[1] = '{') then begin
         let _ = fulldebug_gram 
           (Printf.sprintf "Parsing grammar file: new transformation detected") in
         let table = Hashtbl.create 10 in
@@ -69,7 +74,7 @@ let grammar (filename:string) : grammar =
         gra:=(parse_def s,table)::(!gra)
       end
       else
-        Scanf.sscanf s "%l%d {%s@} = %s" case
+        Scanf.sscanf s "%[0-9] {%s@} = %s" case
     done;
     !gra
   with End_of_file -> (

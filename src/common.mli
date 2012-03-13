@@ -21,3 +21,4 @@ exception Parse_error of string*info
 
 val string_to_charlist : string -> char list
 val subst : char -> string -> string -> string
+val guess_arity : string -> int

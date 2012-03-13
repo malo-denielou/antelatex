@@ -81,3 +81,14 @@ let subst c e s =
   in
   subst_aux "" s
 
+let guess_arity s = 
+  let n = String.length s in
+  let t = ref false in
+  let m = ref 0 in
+  for i = 0 to n-1 do
+    let c = int_of_char s.[i] in
+    if c = int_of_char '#' then t:= true
+    else if !t && (49 <= c && c <= 52)
+    then (t:=false ; m:=max (!m) (c-48))
+  done;
+  !m
